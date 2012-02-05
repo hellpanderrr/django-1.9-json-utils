@@ -24,7 +24,7 @@ class DummyImageModel(models.Model):
 		return self.title
 
 
-class SimpleTest(TestCase):
+class JSONEncodingTest(TestCase):
 	def test_basic_model_encoding(self):
 		dummy = DummyModel.objects.create(
 			title="dummy title",
@@ -87,5 +87,20 @@ class SimpleTest(TestCase):
 		expected_json = '\[\{"pk": \d+, "model": "json_utils.dummymodel", "fields": \{"description": "Some Dummy Description", "number": 0, "title": "dummy0"\}\}, {"pk": \d+, "model": "json_utils.dummymodel", "fields": \{"description": "Some Dummy Description", "number": 1, "title": "dummy1"\}\}, \{"pk": \d+, "model": "json_utils.dummymodel", "fields": \{"description": "Some Dummy Description", "number": 2, "title": "dummy2"\}\}\]'
 		self.assertRegexpMatches(
 			to_json(DummyModel.objects.all()),
+			expected_json
+		)
+	
+	def test_mixed(self):
+		for i in range(3):
+			DummyModel.objects.create(
+				title="dummy%i" % i,
+				number = i,
+				description="Some Dummy Description"
+			)
+		result = DummyModel.objects.all()
+		data = {'result':1, 'count':DummyModel.objects.count(), 'payload':result}
+		expected_json = '\{"count": \d+, "result": 1, "payload": \[\{"pk": \d+, "model": "json_utils.dummymodel", "fields": \{"description": "Some Dummy Description", "number": 0, "title": "dummy0"\}''}, \{"pk": \d+, "model": "json_utils.dummymodel", "fields": \{"description": "Some Dummy Description", "number": 1, "title": "dummy1"\}\}, \{"pk": \d+, "model": "json_utils.dummymodel", "fields": \{"description": "Some Dummy Description", "number": 2, "title": "dummy2"\}\}\]\}'
+		self.assertRegexpMatches(
+			to_json(data),
 			expected_json
 		)
