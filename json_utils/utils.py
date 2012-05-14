@@ -5,10 +5,9 @@ from django.utils import simplejson
 from django.utils.encoding import force_unicode
 from django.utils.functional import Promise
 
-json_serializer = serializers.get_serializer("json")()
-python_serializer = serializers.get_serializer("python")()
-
 def to_json(subject, encode=True):
+    json_serializer = serializers.get_serializer("json")()
+    python_serializer = serializers.get_serializer("python")()
     if isinstance(subject, models.Model):
         subject = python_serializer.serialize([subject])[0]
     elif isinstance(subject, models.query.QuerySet):
