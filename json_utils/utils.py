@@ -1,7 +1,7 @@
 from django.core import serializers
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
-from django.utils import simplejson
+import json as simplejson
 from django.utils.encoding import force_unicode
 from django.utils.functional import Promise
 
