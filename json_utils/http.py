@@ -8,4 +8,4 @@ class JSONResponse(http.HttpResponse):
         # of the Django middleware and other more generic solutions.
         content = utils.to_json(content)
         super(JSONResponse, self).__init__(content,
-                                           content_type=mimetype)
+                                           content_type=content_type)
