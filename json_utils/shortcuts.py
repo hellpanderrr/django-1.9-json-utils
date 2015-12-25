@@ -6,4 +6,4 @@ def response_json(request, content):
 		mimetype = 'application/json'
 	else:
 		mimetype = 'text/plain'
-	return JSONResponse(content, mimetype=mimetype)
+	return JSONResponse(content, content_type=mimetype)
